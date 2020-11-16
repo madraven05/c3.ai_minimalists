@@ -85,27 +85,27 @@ class LSTM_Model():
     ''' Model fit '''
     def model_compile(self):
         self.model = Sequential()
-        self.model.add(LSTM(100, return_sequences=True, activation='relu', input_shape=(self.n_steps, self.n_features)))
-        self.model.add(LSTM(100, activation='relu'))
-        self.model.add(Dense(256, kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4), 
+        self.model.add(LSTM(100, activation='relu', input_shape=(self.n_steps, self.n_features)))
+        # self.model.add(LSTM(100, activation='relu'))
+        self.model.add(Dense(128, kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4), 
                                   bias_regularizer=regularizers.l2(1e-4), 
                                   activity_regularizer=regularizers.l2(1e-5)))
-        # self.model.add(Dropout(0.25))
+        # self.model.add(Dropout(0.2))
         self.model.add(Dense(1))
 
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss=tf.keras.losses.Huber(), metrics = 'mse')
         return self.model
 
     '''Train Model'''
-    def train_model(self, n_iter, input_data, output):
+    def train_model(self):
         parent_dir = 'models/'
         print("Training Model .............")
         self.model = self.model_compile()  
-        self.model.fit(input_data, output, epochs=50, verbose=1)
+        self.model.fit(self.X, self.y, epochs=50, verbose=1)
         print("Trained.............")
         # model.fit(time_series_data, Output_timeSeries, epochs=50, verbose=2)
         print("Saving Model .............")
-        self.model.save(parent_dir+"CTST_2LSTM_100_{}_{}.h5".format(n_iter, self.stateID))
+        self.model.save(parent_dir+"CTST_2LSTM_100_{}.h5".format(self.stateID))
         # fold of iteration, id of the state
         print("Saved")
 
@@ -136,32 +136,26 @@ class LSTM_Model():
     '''Model Predict'''
     def predict(self):
         parent_dir = "models/"
-        output = self.n_fold_predict()
         test_model = self.case_count_data[-self.n_steps:]
+        print(test_model)
         # test_model = test_model.reshape((1, self.n_steps, self.n_features))
-        test_output = np.zeros((5,))
-        final_predict =[]
+        final_predict = []
         window = test_model
-        print(window)
         for j in range(3):
             x_window = window.reshape((1,self.n_steps,self.n_features))
-            for i in range(self.n_folds):
-                self.model = load_model(parent_dir+"CTST_2LSTM_100_{}_{}.h5".format(i, self.stateID))
-                y = self.model.predict(x_window)
-                test_output[i] = y
+            # for i in range(self.n_folds):
+            model = load_model(parent_dir+"CTST_2LSTM_100_{}.h5".format(self.stateID))
+            y = model.predict(x_window)
+            test_output = y
+            # y_polyfit_new = self.y_polyfit.reshape(len(self.y_polyfit), 1)
+            # weights = np.linalg.inv(output).dot(y_polyfit_new)
 
-
-            y_polyfit_new = self.y_polyfit.reshape(len(self.y_polyfit), 1)
-            weights = np.linalg.inv(output).dot(y_polyfit_new)
-
-            final_output = np.dot(test_output, weights)
-            
-            case_count_prediction = final_output*(self.max_count-self.min_count) + self.min_count
+            # final_output = np.dot(test_output, weights)
+            case_count_prediction = test_output*(self.max_count-self.min_count) + self.min_count
             final_predict.append(case_count_prediction[0])
-
             # window.append(case_count_prediction)
             # print(window)
-            window = np.append(window, final_output[0])
+            window = np.append(window, test_output[0])
             window = window[1:]
             
 
