@@ -138,18 +138,31 @@ class LSTM_Model():
         parent_dir = "models/"
         output = self.n_fold_predict()
         test_model = self.case_count_data[-self.n_steps:]
-        test_model = test_model.reshape((1, self.n_steps, self.n_features))
+        # test_model = test_model.reshape((1, self.n_steps, self.n_features))
         test_output = np.zeros((5,))
-        for i in range(self.n_folds):
-            self.model = load_model(parent_dir+"CTST_2LSTM_100_{}_{}.h5".format(i, self.stateID))
-            y = self.model.predict(test_model)
-            test_output[i] = y
+        final_predict =[]
+        window = test_model
+        print(window)
+        for j in range(3):
+            x_window = window.reshape((1,self.n_steps,self.n_features))
+            for i in range(self.n_folds):
+                self.model = load_model(parent_dir+"CTST_2LSTM_100_{}_{}.h5".format(i, self.stateID))
+                y = self.model.predict(x_window)
+                test_output[i] = y
 
-        y_polyfit_new = self.y_polyfit.reshape(len(self.y_polyfit), 1)
-        weights = np.linalg.inv(output).dot(y_polyfit_new)
 
-        final_output = np.dot(test_output, weights)
-        
-        self.case_count_prediction = final_output*(self.max_count-self.min_count) + self.min_count
-        
-        return self.case_count_prediction
+            y_polyfit_new = self.y_polyfit.reshape(len(self.y_polyfit), 1)
+            weights = np.linalg.inv(output).dot(y_polyfit_new)
+
+            final_output = np.dot(test_output, weights)
+            
+            case_count_prediction = final_output*(self.max_count-self.min_count) + self.min_count
+            final_predict.append(case_count_prediction[0])
+
+            # window.append(case_count_prediction)
+            # print(window)
+            window = np.append(window, final_output[0])
+            window = window[1:]
+            
+
+        return final_predict
