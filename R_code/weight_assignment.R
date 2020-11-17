@@ -1,12 +1,15 @@
 library(readxl)
+install.packages("sf")
 library(sf)
+install.packages('spdep')
 library(spdep)
 library(sp)
 library(tictoc)
+install.packages('lwgeom')
 library(lwgeom)
 
 tic()
-
+setwd("/home/pranshu/Documents/Project Course/github1/c3.ai_minimalists/R_code/")
 # Read input data
 Link_distance   = read_xlsx("Data_input/route_final.xlsx") # Route distance
 State_boundary = st_read("Data_input/dist_poly_new.shp") # State boundary
@@ -51,8 +54,8 @@ for(i in 1:length(State_names)){ # 'i' is row number
       
      
       
-      HV_i = Vulnerability$ccr_health[Vulnerability$NAME == State_names[i]]
-      HV_j = Vulnerability$ccr_health[Vulnerability$NAME == State_names[j]]
+      HV_i = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == State_names[i]]
+      HV_j = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == State_names[j]]
       
       weight = as.numeric((l_i * HV_i + l_j * HV_j) / tll)
       Link_distance$weight[Link_distance$i_name == State_names[i] & Link_distance$j_name == State_names[j]] = weight
@@ -74,9 +77,9 @@ for(i in 1:length(State_names)){ # 'i' is row number
           l1 = st_length(link_1)
           l2 = st_length(link_2)
           l3 = st_length(link_3)
-          HV1 = Vulnerability$ccr_health[Vulnerability$NAME == dist_1]
-          HV2 = Vulnerability$ccr_health[Vulnerability$NAME == dist_2]
-          HV3 = Vulnerability$ccr_health[Vulnerability$NAME == dist_3]
+          HV1 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_1]
+          HV2 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_2]
+          HV3 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_3]
           
           weight = as.numeric((l1 * HV1 + l2 * HV2 + l3 * HV3 ) / (l1+l2+l3))
           Link_distance$weight[Link_distance$i_name == State_names[i] & Link_distance$j_name == State_names[j]] = weight
@@ -95,10 +98,10 @@ for(i in 1:length(State_names)){ # 'i' is row number
           l2 = st_length(link_2)
           l3 = st_length(link_3)
           l4 = st_length(link_4)
-          HV1 = Vulnerability$ccr_health[Vulnerability$NAME == dist_1]
-          HV2 = Vulnerability$ccr_health[Vulnerability$NAME == dist_2]
-          HV3 = Vulnerability$ccr_health[Vulnerability$NAME == dist_3]
-          HV4 = Vulnerability$ccr_health[Vulnerability$NAME == dist_4]
+          HV1 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_1]
+          HV2 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_2]
+          HV3 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_3]
+          HV4 = Vulnerability$ccr.eff[Vulnerability$health_data.NAME == dist_4]
           
           weight = as.numeric((l1 * HV1 + l2 * HV2 + l3 * HV3 + l4 * HV4) / (l1+l2+l3+l4))
           Link_distance$weight[Link_distance$i_name == State_names[i] & Link_distance$j_name == State_names[j]] = weight

@@ -161,7 +161,7 @@ class LSTM_Model():
         return final_predict
 
     '''
-    Prediction for three days
+    Prediction for the next day and update CSV
     '''
     def update_csv(self):
         parent_dir = "trained_models/"
