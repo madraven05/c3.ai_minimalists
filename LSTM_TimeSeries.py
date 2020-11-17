@@ -142,7 +142,7 @@ class LSTM_Model():
         for j in range(3):
             x_window = window.reshape((1,self.n_steps,self.n_features))
             # for i in range(self.n_folds):
-            model = tf.keras.experimental.load_from_saved_model(parent_dir+"CTST_2LSTM_100_{}.h5".format(self.stateID))
+            model = load_model(parent_dir+"CTST_2LSTM_100_{}.h5".format(self.stateID))
             print(model.summary())
             y = model.predict(x_window)
             test_output = y
@@ -167,7 +167,7 @@ class LSTM_Model():
         parent_dir = "trained_models/"
         predictions = []
         # For 56 states
-        for i in range(1,56,1):
+        for i in range(1,57,1):
             try:
                 self.set_data("databases/{}.csv".format(i), "case_count") # Case count data set
                 x_input = self.case_count_data[-self.n_steps:]
@@ -184,10 +184,11 @@ class LSTM_Model():
         print(predictions[:4])
         path_to_csv = "R_code/Data_input/health_input.csv"
         df = pd.read_csv(path_to_csv)
+        print(len(predictions))
         df['Total_Case'] = predictions
 
         normalised_predictions = [(case-min(predictions))/(max(predictions)-min(predictions)) for case in predictions] # Normalised Predictions
         df['TC_S'] = normalised_predictions # Update the TC_S column
-        # df.to_csv(path_to_csv) # Save in .csv file
-        print(df['TC_S'].head(10))
+        df.to_csv(path_to_csv) # Save in .csv file
+        # print(df['TC_S'].head(10))
 
