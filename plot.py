@@ -213,15 +213,43 @@ def plot_state_road_vul(road_path, state_path, centroid_path):
 
     road_df['colors'] = colors
 
+    # Adding colors for the centroids
+    colors_centroid = []
+    for vul in state_df['Total_vul']:
+        if round(vul,3) <= 0.094 and round(vul,3) >= 0.0:
+            colors_centroid.append("#1f418f") # Dark Blue
+        elif round(vul,3) <= 0.194 and round(vul,3) >= 0.095:
+            colors_centroid.append("#24adbd") # Light Blue
+        elif round(vul,3) <= 0.308 and round(vul,3) >= 0.195:
+            colors_centroid.append("#16d933") # Light Green
+        elif round(vul,3) <= 0.497 and round(vul,3) >= 0.309:
+            colors_centroid.append("#cfd916") # Yellow
+        elif round(vul,3) <= 1 and round(vul,3) >= 0.498:
+            colors_centroid.append("#e32f0b") # Red    
+        else:
+            print(vul)
+
+    # print(len(colors_centroid))
+    centroid_df['colors'] = colors_centroid
+
 
     # Legend Elements
-    legend_elements = [
-        Line2D([0], [0], color='#1f418f', lw=1, label='0.000 - 0.094'),
-        Line2D([0], [0], color='#24adbd', lw=1, label='0.095 - 0.194'),
+    legend_elements_network = [
+        Line2D([0], [0], color='#24adbd', lw=1, label='0.000 - 0.094'),
+        Line2D([0], [0], color='#1f418f', lw=1, label='0.095 - 0.194'),
         Line2D([0], [0], color='#16d933', lw=1, label='0.195 - 0.308'),
         Line2D([0], [0], color='#cfd916', lw=1, label='0.309 - 0.497'),
         Line2D([0], [0], color='#e32f0b', lw=1, label='0.498 - 1'),
     ]
+
+    legend_elements_centroid = [
+        Line2D([0], [0], marker='o',color='white', label='0.000 - 0.094',markerfacecolor='#1f418f', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.095 - 0.194',markerfacecolor='#24adbd', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.195 - 0.308',markerfacecolor='#16d933', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.309 - 0.497',markerfacecolor='#cfd916', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.498 - 1',markerfacecolor='#e32f0b', markersize=15),   
+    ]
+
 
     
     base = state_df.boundary.plot(color='black', linewidth=0.8)
@@ -236,9 +264,12 @@ def plot_state_road_vul(road_path, state_path, centroid_path):
 
     # Plotting
     ctx.add_basemap(base, source=ctx.providers.Stamen.TerrainBackground)
-    centroid_plot = centroid_df.plot(ax=base, color="#f7f41b")
+    centroid_plot = centroid_df.plot(ax=base, color=centroid_df['colors'], linewidth=4)
     road_plot = road_df.plot(ax=centroid_plot,color=road_df['colors'], figsize=(10,10), linewidth=2)
-    plt.legend(handles=legend_elements, title="Road Networks Vulnerability")
+    legend_network = plt.legend(handles=legend_elements_network, title="Road Networks Vulnerability", loc='lower right')
+    legend_centroid = plt.legend(handles=legend_elements_centroid, title="Total Vulnerability", loc='upper right')
+    road_plot.add_artist(legend_network)
+    road_plot.add_artist(legend_centroid)
     plt.show()
 
 '''

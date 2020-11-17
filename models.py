@@ -200,6 +200,20 @@ class Vulnerability_Calculator():
         state_poly_df['Total_vul'] = Total_vul
         print("Done!")
 
+        # Updating State centroid json file
+        print("Updating State centroid JSON file....")
+        states_wt_df = pd.read_csv("R_code/Data_input/dea_efficiencies_health_USA.csv")
+        state_cent_df = gpd.read_file("json/state_centroid_vulnerability.json")
+
+        state_cent_df['health_vul'] = states_wt_df['ccr.eff']
+
+        Total_vul = []
+        for i in range(len(state_cent_df['health_vul'])):
+            Total_vul.append(math.sqrt(state_cent_df['health_vul'][i] * state_cent_df['Social_vul'][i]))
+
+        state_cent_df['Total_vul'] = Total_vul
+        print("Done!")
+
         # Updating Road Networks json file
         print("Updating Road Networks json file...")
         road_wt_df = pd.read_csv("R_code/R_output/USA_weights_distance.csv")
