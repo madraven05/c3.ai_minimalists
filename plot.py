@@ -248,4 +248,4 @@ def plot_air_transport_vul():
     pass
 
 # plot_state_road_vul(path_road_vul, path_state_vul, path_centroid_vul)
-plot_state_total_vul(path_state_vul)
+# plot_state_total_vul(path_state_vul)
