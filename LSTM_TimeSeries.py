@@ -132,7 +132,7 @@ class LSTM_Model():
 
 
     '''Model Predict'''
-    def predict(self):
+    def predict_3_days(self):
         parent_dir = "trained_models/"
         test_model = self.case_count_data[-self.n_steps:]
         print(test_model)
@@ -142,7 +142,8 @@ class LSTM_Model():
         for j in range(3):
             x_window = window.reshape((1,self.n_steps,self.n_features))
             # for i in range(self.n_folds):
-            model = load_model(parent_dir+"death_CTST_2LSTM_100_{}.h5".format(self.stateID))
+            model = tf.keras.experimental.load_from_saved_model(parent_dir+"CTST_2LSTM_100_{}.h5".format(self.stateID))
+            print(model.summary())
             y = model.predict(x_window)
             test_output = y
             # y_polyfit_new = self.y_polyfit.reshape(len(self.y_polyfit), 1)
@@ -150,7 +151,7 @@ class LSTM_Model():
 
             # final_output = np.dot(test_output, weights)
             case_count_prediction = test_output*(self.max_count-self.min_count) + self.min_count
-            final_predict.append(case_count_prediction[0])
+            final_predict.append(case_count_prediction[0][0])
             # window.append(case_count_prediction)
             # print(window)
             window = np.append(window, test_output[0])
@@ -159,8 +160,34 @@ class LSTM_Model():
 
         return final_predict
 
-        '''
-        Prediction for three days
-        '''
-        def predict_3_next_days(self):
-            pass
+    '''
+    Prediction for three days
+    '''
+    def update_csv(self):
+        parent_dir = "trained_models/"
+        predictions = []
+        # For 56 states
+        for i in range(1,56,1):
+            try:
+                self.set_data("databases/{}.csv".format(i), "case_count") # Case count data set
+                x_input = self.case_count_data[-self.n_steps:]
+                x_input = x_input.reshape((1,self.n_steps,self.n_features))
+                
+                model = load_model(parent_dir+"CTST_2LSTM_100_{}.h5".format(i))
+                y = model.predict(x_input)
+                case_count_prediction = y[0][0]*(self.max_count-self.min_count) + self.min_count
+                predictions.append(int(case_count_prediction))
+            except Exception as inst:
+                print(inst, i)
+                
+
+        print(predictions[:4])
+        path_to_csv = "R_code/Data_input/health_input.csv"
+        df = pd.read_csv(path_to_csv)
+        df['Total_Case'] = predictions
+
+        normalised_predictions = [(case-min(predictions))/(max(predictions)-min(predictions)) for case in predictions] # Normalised Predictions
+        df['TC_S'] = normalised_predictions # Update the TC_S column
+        # df.to_csv(path_to_csv) # Save in .csv file
+        print(df['TC_S'].head(10))
+
