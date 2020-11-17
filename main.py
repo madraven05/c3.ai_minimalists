@@ -1,16 +1,24 @@
 import numpy as np
 import tensorflow as tf
-from LSTM_TimeSeries import LSTM_Model
+from models import LSTM_Model, Vulnerability_Calculator
+from plot import path_state_vul, path_road_vul, path_centroid_vul, path_air_transport_vul, path_air_state_vul
+from plot import plot_state_health_vul, plot_state_social_vul
 
 
-lstm_model_1 = LSTM_Model(n_steps = 7, n_features = 1, n_folds = 5)
-# lstm_model_1.set_data("databases/39.csv", "case_count")
-# lstm_model_1.make_data(stateID=39)
-# lstm_model_1.n_fold_train()
-# lstm_model_1.train_model()
-# output = lstm_model_1.predict_3_days()
-# 
-lstm_model_1.update_csv()
+# Predict and update csv
+# lstm_model_1 = LSTM_Model(n_steps = 7, n_features = 1)
+# lstm_model_1.update_csv()
+
+
+cal = Vulnerability_Calculator()
+
+# Run R files
+cal.calculate_weights()
+# Update json files
+cal.update_json()
+
+# Plot
+plot_state_health_vul(path_state_vul)
 
 # print(output)
 
