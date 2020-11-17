@@ -25,3 +25,6 @@ plot_state_road_vul(road_path=path_road_vul, state_path=path_state_vul, centroid
 ### Output
 The output of the above code is, 
 ![Road Vulnerabilities](images/road_vul.png)
+
+The social vulnerabilities of the state can also be calculated. Shown below is one of the results that we get,
+![Social Vulnerabilities](images/social_vul.png)
