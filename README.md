@@ -27,3 +27,6 @@ The output of the above code is,
 
 The social vulnerabilities of the state can also be calculated. Shown below is one of the results that we get,
 ![Social Vulnerabilities](media/social_vul.png)
+
+A heatmap for the month of October is generated to demonstrate the severity of flight travels across different airports,
+![Airport Heatmap](media/heatmap.png)

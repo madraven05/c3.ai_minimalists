@@ -11,7 +11,7 @@ path_road_vul = "../json/State_road_vulnerability_upd.json"
 path_centroid_vul = "../json/state_centroid_vulnerability.json"
 path_air_transport_vul = "../json/State_air_transport_vulnerab.json"
 path_airport_vul = "../json/State_airport_vulnerability_.json"
-path_heatmaps = "../air_matrix_input1.csv"
+path_heatmaps = "../R_code/Data_input/air_matrix_input1.csv"
 
 
 def plot_state_social_vul(path):
@@ -296,15 +296,15 @@ def plot_air_transport_vul():
     colors = []
     for vul in air_transport_df['Total_vul']:
         # print(vul)
-        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+        if round(vul,3) <= 0.327 and round(vul,3) >= 0.0:
             colors.append("#1f418f") # Dark Blue
-        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+        elif round(vul,3) <= 0.873 and round(vul,3) >= 0.328:
             colors.append("#24adbd") # Light Blue
-        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+        elif round(vul,3) <= 1.760 and round(vul,3) >= 0.874:
             colors.append("#16d933") # Light Green
-        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
+        elif round(vul,3) <= 3.125 and round(vul,3) >= 1.761:
             colors.append("#cfd916") # Yellow
-        elif round(vul,3) >= 2.150:
+        elif round(vul,3) >= 3.126:
             colors.append("#e32f0b") # Red    
         else:
             print(vul)
@@ -315,15 +315,15 @@ def plot_air_transport_vul():
     colors = []
     for vul in airport_df['Total_vul']:
         # print(vul)
-        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+        if round(vul,3) <= 0.327 and round(vul,3) >= 0.0:
             colors.append("#1f418f") # Dark Blue
-        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+        elif round(vul,3) <= 0.873 and round(vul,3) >= 0.328:
             colors.append("#24adbd") # Light Blue
-        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+        elif round(vul,3) <= 1.760 and round(vul,3) >= 0.874:
             colors.append("#16d933") # Light Green
-        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
-            colors.append("#cfd916https://web.whatsapp.com/") # Yellow
-        elif round(vul,3) >= 2.150:
+        elif round(vul,3) <= 3.125 and round(vul,3) >= 1.761:
+            colors.append("#cfd916") # Yellow
+        elif round(vul,3) >= 3.126:
             colors.append("#e32f0b") # Red    
         else:
             print(vul)
@@ -337,17 +337,17 @@ def plot_air_transport_vul():
     state_df['coords'] = [coords[0] for coords in state_df['coords']]
 
     for idx, row in state_df.iterrows():
-        plt.annotate(name=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
 
     # Legend Elements
     legend_elements_network = [
-        Line2D([0], [0], color='#1f418f', lw=1, label='0.000 - 0.315'),
-        Line2D([0], [0], color='#24adbd', lw=1, label='0.316 - 0.707'),
-        Line2D([0], [0], color='#16d933', lw=1, label='0.708 - 1.255'),
-        Line2D([0], [0], color='#cfd916', lw=1, label='1.256 - 2.149'),
-        Line2D([0], [0], color='#e32f0b', lw=1, label='2.150 - '),
+        Line2D([0], [0], color='#1f418f', lw=1, label='0.000 - 0.327'),
+        Line2D([0], [0], color='#24adbd', lw=1, label='0.328 - 0.873'),
+        Line2D([0], [0], color='#16d933', lw=1, label='0.874 - 1.760'),
+        Line2D([0], [0], color='#cfd916', lw=1, label='1.761 - 3.125'),
+        Line2D([0], [0], color='#e32f0b', lw=1, label='3.126 - '),
     ]
 
     # Plotting
@@ -378,15 +378,15 @@ def plot_airport_vul():
     colors = []
     for vul in air_transport_df['Total_vul']:
         # print(vul)
-        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+        if round(vul,3) <= 0.327 and round(vul,3) >= 0.0:
             colors.append("#1f418f") # Dark Blue
-        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+        elif round(vul,3) <= 0.873 and round(vul,3) >= 0.328:
             colors.append("#24adbd") # Light Blue
-        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+        elif round(vul,3) <= 1.760 and round(vul,3) >= 0.874:
             colors.append("#16d933") # Light Green
-        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
+        elif round(vul,3) <= 3.125 and round(vul,3) >= 1.761:
             colors.append("#cfd916") # Yellow
-        elif round(vul,3) >= 2.150:
+        elif round(vul,3) >= 3.126:
             colors.append("#e32f0b") # Red    
         else:
             print(vul)
@@ -405,11 +405,11 @@ def plot_airport_vul():
 
     # Legned Handle
     legend_elements_centroid = [
-        Line2D([0], [0], marker='o',color='white', label='0.000 - 0.315',markerfacecolor='#1f418f', markersize=15),
-        Line2D([0], [0], marker='o',color='white', label='0.316 - 0.707',markerfacecolor='#24adbd', markersize=15),
-        Line2D([0], [0], marker='o',color='white', label='0.708 - 1.255',markerfacecolor='#16d933', markersize=15),
-        Line2D([0], [0], marker='o',color='white', label='1.256 - 2.149',markerfacecolor='#cfd916', markersize=15),
-        Line2D([0], [0], marker='o',color='white', label='2.150 - ',markerfacecolor='#e32f0b', markersize=15),   
+        Line2D([0], [0], marker='o',color='white', label='0.000 - 0.327',markerfacecolor='#1f418f', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.328 - 0.873',markerfacecolor='#24adbd', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.874 - 1.760',markerfacecolor='#16d933', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='1.761 - 3.125',markerfacecolor='#cfd916', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='3.126 - ',markerfacecolor='#e32f0b', markersize=15),   
     ]
 
     # Plotting
