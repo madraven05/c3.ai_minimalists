@@ -23,9 +23,9 @@ $ pip install -r requirements.txt
 ### Important Functions
 Here are the list of some important functions
 #### Using the LSTM based Prediction Model
-While initialising the `LSTM_Model` object, `n_steps` is used to specify *the number of previoud days' data the model will use to predict the next case counts*.
+While initialising the `LSTM_Model` object, `n_steps` is used to specify *the number of previous days' data the model will use to predict the next case counts*.
 `n_features` is set to 1.
-1. `set_data(data_loc, data_type)` is used to set tbe data for the prediction model to the specified database. The path of the database is stored in `data_loc` and the `data_type` can take values of the columns of the database ("new_case_count", "case_count", "death_count", etc.)
+1. `set_data(data_loc, data_type)` is used to set the data for the prediction model to the specified database. The path of the database is stored in `data_loc` and the `data_type` can take values of the columns of the database ("new_case_count", "case_count", "death_count", etc.)
 
 2. `make_data(stateID)` is used to split the data accquired from the function `set_data()` so that it can be fed into our Deep Learning model
 
@@ -46,7 +46,7 @@ While initialising the `LSTM_Model` object, `n_steps` is used to specify *the nu
 5. `plot_air_transport_vul()` is used to plot the travel corridors for the airplane networks. This also plots  airports coloured according to their respective Total Vulnerability at airports.
 6. `plot_airport_vul()` is used to plot airports coloured according to their respective Total Vulnerability. 
 7. `plot_heatmaps(month)` is used to plot heatmaps representing the vulnerability of different possible flights. 
-> NOTE - 6, 7 and 8 do not update after predictions. (Future Work)
+> NOTE - 5, 6 and 7 do not update after predictions. (Future Work)
 
 ### Code Implementation
 Below is a code to plot the inter-state travel corridors on the road networks. 
