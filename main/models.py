@@ -1,5 +1,3 @@
-
-
 '''
 Create a class model
 '''
@@ -55,23 +53,24 @@ class LSTM_Model():
         self.case_count_data = (self.case_count_data - self.min_count)/(self.max_count - self.min_count)
 
 
-    '''split a univariate sequence into samples'''
+    
     def split_sequence(self, sequence, n_steps):
+        '''split sequence into samples'''
+
         X, y = list(), list()
         for i in range(len(sequence)):
-            # find the end of this pattern
             end_ix = i + n_steps
-            # check if we are beyond the sequence
             if end_ix > len(sequence)-1:
                 break
-            # gather input and output parts of the pattern
             seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
             X.append(seq_x)
             y.append(seq_y)
         return np.array(X), np.array(y)
 
-    ''' Make data '''
+
     def make_data(self, stateID):
+        ''' Make data '''
+
         self.stateID = stateID
         self.X, self.y = self.split_sequence(self.case_count_data, self.n_steps)
         self.X = self.X.reshape((self.X.shape[0], self.X.shape[1], self.n_features))
@@ -80,8 +79,11 @@ class LSTM_Model():
         self.y = self.y[ : train_days-self.n_folds]
         
 
-    ''' Model fit '''
+    
     def model_compile(self):
+        ''' Model fit '''
+
+
         self.model = Sequential()
         self.model.add(LSTM(128,activation='relu', input_shape=(self.n_steps, self.n_features)))
         # self.model.add(LSTM(100, activation='relu'))
@@ -94,8 +96,10 @@ class LSTM_Model():
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss=tf.keras.losses.Huber(), metrics = 'mse')
         return self.model
 
-    '''Train Model'''
+    
     def train_model(self):
+        '''Train Model'''
+
         parent_dir = '../trained_models/'
         print("Training Model .............")
         self.model = self.model_compile()  

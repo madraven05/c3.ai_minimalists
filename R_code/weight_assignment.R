@@ -8,6 +8,10 @@ library(tictoc)
 # install.packages('lwgeom')
 library(lwgeom)
 
+# Acknowledgements - Raviraj Dave, Tushar Choudary, Udit Bhatia and Avijit Maji
+# Paper under review - https://arxiv.org/abs/2011.00267 
+
+
 tic()
 setwd("/home/pranshu/Documents/Project Course/github1/c3.ai_minimalists/R_code/")
 # Read input data

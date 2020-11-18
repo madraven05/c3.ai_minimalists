@@ -52,7 +52,7 @@ def plot_state_social_vul(path):
     df['coords'] = [coords[0] for coords in df['coords']]
 
     for idx, row in df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
     ctx.add_basemap(ax, source=ctx.providers.OpenStreetMap.Mapnik)
@@ -109,7 +109,7 @@ def plot_state_health_vul():
     df['coords'] = [coords[0] for coords in df['coords']]
 
     for idx, row in df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
     ctx.add_basemap(ax, source=ctx.providers.OpenStreetMap.Mapnik)
@@ -168,7 +168,7 @@ def plot_state_total_vul():
     df['coords'] = [coords[0] for coords in df['coords']]
 
     for idx, row in df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
     ctx.add_basemap(ax, source=ctx.providers.OpenStreetMap.Mapnik)
@@ -265,7 +265,7 @@ def plot_state_road_vul():
     state_df['coords'] = [coords[0] for coords in state_df['coords']]
 
     for idx, row in state_df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
     # Plotting
@@ -337,7 +337,7 @@ def plot_air_transport_vul():
     state_df['coords'] = [coords[0] for coords in state_df['coords']]
 
     for idx, row in state_df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(name=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
 
@@ -400,7 +400,7 @@ def plot_airport_vul():
     state_df['coords'] = [coords[0] for coords in state_df['coords']]
 
     for idx, row in state_df.iterrows():
-        plt.annotate(s=row['NAME'], xy=row['coords'],
+        plt.annotate(text=row['NAME'], xy=row['coords'],
                     horizontalalignment='center', size=8)
 
     # Legned Handle
