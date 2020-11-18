@@ -49,7 +49,7 @@ Here are the list of some important functions
 Below is a code to plot the inter-state travel corridors on the road networks. 
 ```python
 from models import LSTM_Model, Vulnerability_Calculator
-from plot import plot_state_health_vul, plot_state_social_vul, plot_state_road_vul
+from plot import plot_state_road_vul
 
 lstm_model = LSTM_Model(n_steps=7, n_features=1)
 # Predict next day value and update the required csv
