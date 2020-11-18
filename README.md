@@ -22,6 +22,8 @@ $ pip install -r requirements.txt
 ### Important Functions
 Here are the list of some important functions
 #### Using the LSTM based Prediction Model
+While initialising the `LSTM_Model` object, `n_steps` is used to specify *the number of previoud days' data the model will use to predict the next case counts*.
+`n_features` is set to 1.
 1. `set_data(data_loc, data_type)` is used to set tbe data for the prediction model to the specified database. The path of the database is stored in `data_loc` and the `data_type` can take values of the columns of the database ("new_case_count", "case_count", "death_count", etc.)
 
 2. `make_data(stateID)` is used to split the data accquired from the function `set_data()` so that it can be fed into our Deep Learning model
