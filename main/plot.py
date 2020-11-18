@@ -4,21 +4,23 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import geopandas as gpd
 import contextily as ctx
+import seaborn as sns
 
 path_state_vul = "../json/State_polygon_vulnerability_.json"
 path_road_vul = "../json/State_road_vulnerability_upd.json"
 path_centroid_vul = "../json/state_centroid_vulnerability.json"
 path_air_transport_vul = "../json/State_air_transport_vulnerab.json"
-path_air_state_vul = "../json/State_airport_vulnerability_.json"
+path_airport_vul = "../json/State_airport_vulnerability_.json"
+path_heatmaps = "../air_matrix_input1.csv"
 
 
-'''
-Plot Social Vulnerability
-'''
 def plot_state_social_vul(path):
+    '''
+    Plot Social Vulnerability
+    '''
     
     # Read json file and set epsg to 3857
-    df = gpd.read_file(path)
+    df = gpd.read_file(path_state_vul)
     df = df.to_crs(epsg=3857)
 
     # Adding Colours to the states
@@ -68,13 +70,14 @@ def plot_state_social_vul(path):
     
     plt.show()
     
-'''
-Plot Health Vulnerability
-'''
-def plot_state_health_vul(path):
+
+def plot_state_health_vul():
+    ''''
+    Plot Health Vulnerability
+    '''
     
     # Read json file and set epsg to 3857
-    df = gpd.read_file(path)
+    df = gpd.read_file(path_state_vul)
     df = df.to_crs(epsg=3857)
 
     # Adding Colours to the states
@@ -125,13 +128,15 @@ def plot_state_health_vul(path):
     plt.show()
 
 
-'''
-Plot Total Vulnerability
-'''
-def plot_state_total_vul(path):
 
-        # Read json file and set epsg to 3857
-    df = gpd.read_file(path)
+def plot_state_total_vul():
+
+    '''
+    Plot Total Vulnerability
+    '''
+
+    # Read json file and set epsg to 3857
+    df = gpd.read_file(path_state_vul)
     df = df.to_crs(epsg=3857)
 
     # Adding Colours to the states
@@ -181,17 +186,18 @@ def plot_state_total_vul(path):
     
     plt.show()
 
-'''
-Plot Road Networks Vulnerability
-'''
-def plot_state_road_vul(road_path, state_path, centroid_path):
+
+def plot_state_road_vul():
+    '''
+    Plot Road Networks Vulnerability
+    '''
     
     # Read json file and set epsg to 3857
-    road_df = gpd.read_file(road_path)
+    road_df = gpd.read_file(path_road_vul)
     road_df = road_df.to_crs(epsg=3857)
-    state_df = gpd.read_file(state_path)
+    state_df = gpd.read_file(path_state_vul)
     state_df = state_df.to_crs(epsg=3857)
-    centroid_df = gpd.read_file(centroid_path)
+    centroid_df = gpd.read_file(path_centroid_vul)
     centroid_df = centroid_df.to_crs(epsg=3857)
 
     # Adding colour to the paths
@@ -272,11 +278,175 @@ def plot_state_road_vul(road_path, state_path, centroid_path):
     road_plot.add_artist(legend_centroid)
     plt.show()
 
-'''
-Plot Air Transport Vulnerability
-'''
-def plot_air_transport_vul():
-    pass
 
-# plot_state_road_vul(path_road_vul, path_state_vul, path_centroid_vul)
-# plot_state_total_vul(path_state_vul)
+def plot_air_transport_vul():
+    '''
+    Plot Air Transport Network Vulnerability
+
+    NOTE - This doesn't change after updating the csv files. 
+    '''
+    air_transport_df = gpd.read_file(path_air_transport_vul)
+    airport_df = gpd.read_file(path_airport_vul)
+    state_df = gpd.read_file(path_state_vul)
+    state_df = state_df.to_crs(epsg=3857)
+    airport_df = airport_df.to_crs(epsg=3857)
+    air_transport_df = air_transport_df.to_crs(epsg=3857)
+
+    # Adding colour to the air networks
+    colors = []
+    for vul in air_transport_df['Total_vul']:
+        # print(vul)
+        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+            colors.append("#1f418f") # Dark Blue
+        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+            colors.append("#24adbd") # Light Blue
+        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+            colors.append("#16d933") # Light Green
+        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
+            colors.append("#cfd916") # Yellow
+        elif round(vul,3) >= 2.150:
+            colors.append("#e32f0b") # Red    
+        else:
+            print(vul)
+
+    air_transport_df['colors'] = colors
+
+    # Adding colour to the airports
+    colors = []
+    for vul in airport_df['Total_vul']:
+        # print(vul)
+        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+            colors.append("#1f418f") # Dark Blue
+        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+            colors.append("#24adbd") # Light Blue
+        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+            colors.append("#16d933") # Light Green
+        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
+            colors.append("#cfd916") # Yellow
+        elif round(vul,3) >= 2.150:
+            colors.append("#e32f0b") # Red    
+        else:
+            print(vul)
+
+    airport_df['colors'] = colors
+
+    base = state_df.boundary.plot(color='black', linewidth=0.8)
+    
+    # Adding names to the states
+    state_df['coords'] = state_df['geometry'].apply(lambda x: x.representative_point().coords[:])
+    state_df['coords'] = [coords[0] for coords in state_df['coords']]
+
+    for idx, row in state_df.iterrows():
+        plt.annotate(s=row['NAME'], xy=row['coords'],
+                    horizontalalignment='center', size=8)
+
+
+    # Legend Elements
+    legend_elements_network = [
+        Line2D([0], [0], color='#1f418f', lw=1, label='0.000 - 0.315'),
+        Line2D([0], [0], color='#24adbd', lw=1, label='0.316 - 0.707'),
+        Line2D([0], [0], color='#16d933', lw=1, label='0.708 - 1.255'),
+        Line2D([0], [0], color='#cfd916', lw=1, label='1.256 - 2.149'),
+        Line2D([0], [0], color='#e32f0b', lw=1, label='2.150 - '),
+    ]
+
+    # Plotting
+    ctx.add_basemap(base, source=ctx.providers.Stamen.TerrainBackground)
+    airport_plot = airport_df.plot(ax=base, color=airport_df['colors'], linewidth=4)
+    air_transport_df = air_transport_df.plot(ax=airport_plot,color=air_transport_df['colors'], figsize=(10,10), linewidth=2)
+
+    plt.legend(handles=legend_elements_network, title="Air Transport Networks Vulnerability", loc='lower right')
+    plt.show()
+
+    
+    
+    
+
+
+def plot_airport_vul():
+    '''
+    Plot Airport Vulnerability
+    NOTE - This doesn't change after updating the csv files.
+    '''
+
+    airport_df = gpd.read_file(path_airport_vul)
+    state_df = gpd.read_file(path_state_vul)
+    state_df = state_df.to_crs(epsg=3857)
+    airport_df = airport_df.to_crs(epsg=3857)
+
+    # Adding colour to the airports
+    colors = []
+    for vul in air_transport_df['Total_vul']:
+        # print(vul)
+        if round(vul,3) <= 0.315 and round(vul,3) >= 0.0:
+            colors.append("#1f418f") # Dark Blue
+        elif round(vul,3) <= 0.707 and round(vul,3) >= 0.316:
+            colors.append("#24adbd") # Light Blue
+        elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
+            colors.append("#16d933") # Light Green
+        elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
+            colors.append("#cfd916") # Yellow
+        elif round(vul,3) >= 2.150:
+            colors.append("#e32f0b") # Red    
+        else:
+            print(vul)
+
+    airport_df['colors'] = colors
+
+    base = state_df.boundary.plot(color='black', linewidth=0.8)
+    
+    # Adding names to the states
+    state_df['coords'] = state_df['geometry'].apply(lambda x: x.representative_point().coords[:])
+    state_df['coords'] = [coords[0] for coords in state_df['coords']]
+
+    for idx, row in state_df.iterrows():
+        plt.annotate(s=row['NAME'], xy=row['coords'],
+                    horizontalalignment='center', size=8)
+
+    # Legned Handle
+    legend_elements_centroid = [
+        Line2D([0], [0], marker='o',color='white', label='0.000 - 0.315',markerfacecolor='#1f418f', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.316 - 0.707',markerfacecolor='#24adbd', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='0.708 - 1.255',markerfacecolor='#16d933', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='1.256 - 2.149',markerfacecolor='#cfd916', markersize=15),
+        Line2D([0], [0], marker='o',color='white', label='2.150 - ',markerfacecolor='#e32f0b', markersize=15),   
+    ]
+
+    # Plotting
+    ctx.add_basemap(base, source=ctx.providers.Stamen.TerrainBackground)
+    airport_plot = airport_df.plot(ax=base, color=airport_df['colors'], linewidth=4)
+
+    plt.legend(handles=legend_elements_centroid, title="Airport Vulnerability", loc='lower right')
+    plt.show()
+
+
+def plot_heatmaps(month):
+    '''
+    Plot Heatmaps for Air Networks Vulnerability
+    This only makes heatmaps for the months of May, July and October
+    This is just for visualisation purposes
+
+    Parameters -> 
+    month = "may", "july" or "october" (case insensetive)
+    '''
+    
+    data = pd.read_csv(path_heatmaps)
+    data.set_index('i', inplace=True)
+
+    if month.lower() == "october":
+        df = data.pivot_table(values='Transport', index="i", columns='j',fill_value=0)
+    elif month.lower() == "july":
+        df = data.pivot_table(values='Transport_july', index="i", columns='j',
+           fill_value=0)
+    elif month.lower() == "may":
+        df = data.pivot_table(values='Transport_May', index="i", columns='j',fill_value=0)
+    else:
+        print("Invalid month!")
+        return 
+
+    # Plotting
+    plt.subplots(figsize=(35,25))
+    sns.heatmap(df,cmap='icefire',linewidths=.5, annot_kws={"size": 10})
+    sns.set(font_scale=0.4)
+    plt.suptitle(month.upper(), fontsize='large')
+    plt.show()

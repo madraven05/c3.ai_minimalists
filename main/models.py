@@ -229,4 +229,5 @@ class Vulnerability_Calculator():
                     rows1['wt_ij'] == wt 
                     break
         print("Done!")
+
         
