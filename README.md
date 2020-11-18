@@ -28,10 +28,3 @@ The output of the above code is,
 
 The social vulnerabilities of the state can also be calculated. Shown below is one of the results that we get,
 ![Social Vulnerabilities](media/social_vul.png)
-
-## Video Presentation
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true">
-    <source src="media/C3.Ai-1.mp4" type="video/mp4">
-  </video>
-</figure>
