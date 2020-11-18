@@ -322,7 +322,7 @@ def plot_air_transport_vul():
         elif round(vul,3) <= 1.255 and round(vul,3) >= 0.708:
             colors.append("#16d933") # Light Green
         elif round(vul,3) <= 2.149 and round(vul,3) >= 1.256:
-            colors.append("#cfd916") # Yellow
+            colors.append("#cfd916https://web.whatsapp.com/") # Yellow
         elif round(vul,3) >= 2.150:
             colors.append("#e32f0b") # Red    
         else:
