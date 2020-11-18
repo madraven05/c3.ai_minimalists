@@ -27,7 +27,7 @@ Here are the list of some important functions
 2. `make_data(stateID)` is used to split the data accquired from the function `set_data()` so that it can be fed into our Deep Learning model
 
 3. `model_compile()` is used to compile the Deep Learning Model
-4. `model_train()` is used to train the Deep Learning Model. The model is then saved with the filename *CTST_2LSTM_100_<stateID>.h5* in the *trained_models* directory. 
+4. `model_train()` is used to train the Deep Learning Model. The model is then saved with the filename *CTST_2LSTM_100_\<stateID>.h5* in the *trained_models* directory. 
 5. `predict_3_days()` is used to make prediction for the next three days.
 6. `update_csv()` is used to firstly, make the prediction for the next day and update the important .csv files that will be used to calculate different vulnerabilities. 
   
