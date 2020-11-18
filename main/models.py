@@ -112,7 +112,7 @@ class LSTM_Model():
         print("Saved")
 
 
-    '''Model Predict'''
+    '''Model Predict for the next 3 days'''
     def predict_3_days(self):
         parent_dir = "../trained_models/"
         test_model = self.case_count_data[-self.n_steps:]

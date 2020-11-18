@@ -14,7 +14,7 @@ path_airport_vul = "../json/State_airport_vulnerability_.json"
 path_heatmaps = "../R_code/Data_input/air_matrix_input1.csv"
 
 
-def plot_state_social_vul(path):
+def plot_state_social_vul():
     '''
     Plot Social Vulnerability
     '''
@@ -357,10 +357,6 @@ def plot_air_transport_vul():
 
     plt.legend(handles=legend_elements_network, title="Air Transport Networks Vulnerability", loc='lower right')
     plt.show()
-
-    
-    
-    
 
 
 def plot_airport_vul():
