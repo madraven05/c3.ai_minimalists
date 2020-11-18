@@ -6,7 +6,6 @@ The Covid-19 Pandemic has affected the whole world. As we slowly move towards re
 ## Using the model
 ```python
 from models import LSTM_Model, Vulnerability_Calculator
-from plot import path_state_vul, path_road_vul, path_centroid_vul
 from plot import plot_state_health_vul, plot_state_social_vul, plot_state_road_vul
 
 lstm_model = LSTM_Model(n_steps=7, n_features=1)
@@ -20,7 +19,7 @@ cal.calculate_weights()
 cal.update_json()
 
 # Plotting Road Vulnerabilties
-plot_state_road_vul(road_path=path_road_vul, state_path=path_state_vul, centroid_path=path_centroid_vul)
+plot_state_road_vul()
 ```
 ### Output
 The output of the above code is, 
