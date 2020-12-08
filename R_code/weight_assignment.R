@@ -13,6 +13,7 @@ library(lwgeom)
 
 
 tic()
+# Set Current Working Directory in the next line
 setwd("/home/pranshu/Documents/Project Course/github1/c3.ai_minimalists/R_code/")
 # Read input data
 Link_distance   = read_xlsx("Data_input/route_final.xlsx") # Route distance
